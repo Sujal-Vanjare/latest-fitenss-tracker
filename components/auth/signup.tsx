@@ -349,21 +349,3 @@
 //     </div>
 //   );
 // }
-
-import Link from "next/link";
-
-export function AlreadyHaveAccount({ redirectTo }: { redirectTo: string }) {
-  return (
-    <div className="text-center text-sm">
-      <h1>
-        Already have account?{" "}
-        <Link
-          href={redirectTo ? `/signin?next=` + redirectTo : "/signin"}
-          className="text-blue-400"
-        >
-          Signin
-        </Link>
-      </h1>
-    </div>
-  );
-}

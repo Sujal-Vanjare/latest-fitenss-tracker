@@ -1,10 +1,24 @@
 "use client";
 import React from "react";
-import { AlreadyHaveAccount } from "./signup";
 import Social from "./social";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { Link } from "lucide-react";
+import Link from "next/link";
+
+function AlreadyHaveAccount({ redirectTo }: { redirectTo: string }) {
+  return (
+    <div className="text-center text-sm">
+      <h1>
+        Already have account?{" "}
+        <Link
+          href={redirectTo ? `/signin?next=` + redirectTo : "/signin"}
+          className="text-blue-400"
+        >
+          Signin
+        </Link>
+      </h1>
+    </div>
+  );
+}
 
 export default function Register() {
   const queryString =
@@ -39,7 +53,7 @@ export default function Register() {
         </div>
         <AlreadyHaveAccount redirectTo={next || "/"} />
       </div>
-      {/* <SignUp redirectTo={next || "/"} /> */}
+      <AlreadyHaveAccount redirectTo={next || "/"} />
     </div>
   );
 }

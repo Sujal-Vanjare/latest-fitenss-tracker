@@ -65,7 +65,7 @@ export default function SignIn() {
   );
 }
 
-export function AlreadyHaveAccount({ redirectTo }: { redirectTo: string }) {
+function AlreadyHaveAccount({ redirectTo }: { redirectTo: string }) {
   return (
     <div className="text-center text-sm">
       <h1>

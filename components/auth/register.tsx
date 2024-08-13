@@ -53,7 +53,6 @@ export default function Register() {
         </div>
         <AlreadyHaveAccount redirectTo={next || "/"} />
       </div>
-      <AlreadyHaveAccount redirectTo={next || "/"} />
     </div>
   );
 }

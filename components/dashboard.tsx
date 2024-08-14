@@ -152,7 +152,7 @@ export function Dashboard({
                   <span className="sr-only">Fitness Tracker</span>
                 </Link>
                 <Link
-                  href="#"
+                  href="/body-weight"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Home className="h-5 w-5" />
@@ -223,7 +223,7 @@ export function Dashboard({
           <ModeToggle />
           <UserProfile />
         </header>
-        <main className="flex-1 overflow-y-auto p-3">{children}</main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

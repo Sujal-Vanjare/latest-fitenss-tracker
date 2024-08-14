@@ -1,5 +1,7 @@
-import BodyWeightBarChart from "@/components/charts/body-weight-bar-chart";
-import BodyWeightChart from "@/components/charts/body-weight-chart";
+import AddBodyWeight from "@/components/bodyWeight/add-body-weight";
+import BodyWeightBarChart from "@/components/bodyWeight/body-weight-bar-chart";
+import BodyWeightChart from "@/components/bodyWeight/body-weight-chart";
+import BodyWeightHistory from "@/components/bodyWeight/body-weight-history";
 
 export default function Page() {
   const chartData = [
@@ -101,9 +103,19 @@ export default function Page() {
     { recorded_at: "2024-08-11", body_weight: 80.7, bodyweight_change: -6 },
   ];
   return (
-    <main className="flex flex-col 2xl:flex-row gap-3">
-      <BodyWeightChart chartData={chartData} />
-      <BodyWeightBarChart chartData={chartData} />
-    </main>
+    <>
+      <section className="flex flex-col 2xl:flex-row gap-3 p-2">
+        <BodyWeightChart chartData={chartData} />
+        <BodyWeightBarChart chartData={chartData} />
+      </section>
+      <section className="flex flex-col 2xl:flex-row gap-3 p-2">
+        <div className="grow flex flex-col gap-2">
+          <AddBodyWeight />
+          <BodyWeightHistory />
+        </div>
+
+        <div className="2xl:w-[400px]">ads</div>
+      </section>
+    </>
   );
 }

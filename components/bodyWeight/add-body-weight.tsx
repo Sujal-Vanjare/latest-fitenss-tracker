@@ -40,13 +40,13 @@ const FormSchema = z.object({
 
 export default function AddBodyWeight() {
   // user data
-  const { data } = useUser();
+  const { data: user } = useUser();
 
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { recorded_at: undefined }, // Remove default value for body_weight
+    defaultValues: { recorded_at: undefined }, // No default value for recorded_at
   });
 
   // Form submission handler
@@ -60,37 +60,14 @@ export default function AddBodyWeight() {
         // Convert date to ISO string before storing in the database
         const recordedAt = formData.recorded_at.toISOString();
 
-        // Retrieve the most recent weight entry for the user
-        const { data: previousEntries, error: fetchError } = await supabase
-          .from("body_weight_entries")
-          .select("body_weight")
-          .eq("user_id", data?.id)
-          .order("recorded_at", { ascending: false })
-          .limit(1);
-        console.log(previousEntries);
-
-        if (fetchError) {
-          toast.error(fetchError.message);
-          return;
-        }
-
-        // Check if there are previous entries
-        const previousEntry = previousEntries?.[0];
-
-        // Calculate weight change
-        const bodyweightChange = previousEntry
-          ? bodyWeight - previousEntry.body_weight
-          : null;
-
-        // Insert the new entry
+        // Insert the new entry without bodyweight_change
         const { error: insertError } = await supabase
           .from("body_weight_entries")
           .insert([
             {
-              user_id: data?.id, // Add user_id to the new entry
+              user_id: user?.id, // Add user_id to the new entry
               recorded_at: recordedAt,
               body_weight: bodyWeight,
-              bodyweight_change: bodyweightChange, // Ensure this matches the column name in your table
             },
           ]);
 

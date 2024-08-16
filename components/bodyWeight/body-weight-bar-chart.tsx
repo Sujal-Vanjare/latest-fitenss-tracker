@@ -52,22 +52,28 @@ export default function BodyWeightBarChart() {
     data: BodyWeightEntry[]
   ): { monthsData: MonthlyData[]; monthCount: number } => {
     const lastSixMonthsData: MonthlyData[] = [];
-    const uniqueMonths = new Map<string, number>();
+    const monthsMap = new Map<string, BodyWeightEntry>();
 
     data.forEach((entry) => {
       const date = new Date(entry.recorded_at);
-      const month = date.toLocaleString("default", {
-        month: "long",
-        year: "numeric",
-      });
+      const monthKey = `${date.getFullYear()}-${date.getMonth()}`; // Unique key for each month (year-month)
 
-      uniqueMonths.set(month, entry.body_weight);
+      // Replace the entry for the month if the current entry is later (last entry)
+      if (
+        !monthsMap.has(monthKey) ||
+        new Date(entry.recorded_at) >
+          new Date(monthsMap.get(monthKey)!.recorded_at)
+      ) {
+        monthsMap.set(monthKey, entry);
+      }
     });
 
     // Convert the map to an array and sort by date
-    const sortedMonths = Array.from(uniqueMonths.keys()).sort((a, b) => {
-      const dateA = new Date(a);
-      const dateB = new Date(b);
+    const sortedMonths = Array.from(monthsMap.keys()).sort((a, b) => {
+      const [yearA, monthA] = a.split("-").map(Number); // Convert strings to numbers
+      const [yearB, monthB] = b.split("-").map(Number); // Convert strings to numbers
+      const dateA = new Date(yearA, monthA);
+      const dateB = new Date(yearB, monthB);
       return dateA.getTime() - dateB.getTime();
     });
 
@@ -75,8 +81,13 @@ export default function BodyWeightBarChart() {
     const lastSixMonths = sortedMonths.slice(-6);
 
     // Create the final result in the correct format
-    lastSixMonths.forEach((month) => {
-      lastSixMonthsData.push({ month, weight: uniqueMonths.get(month)! });
+    lastSixMonths.forEach((monthKey) => {
+      const entry = monthsMap.get(monthKey)!;
+      const month = new Date(entry.recorded_at).toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      });
+      lastSixMonthsData.push({ month, weight: entry.body_weight });
     });
 
     return {

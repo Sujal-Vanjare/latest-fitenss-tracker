@@ -31,6 +31,7 @@ import { EditBodyWeightModal } from "./edit-body-weight-modal";
 import { toast } from "sonner";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { Skeleton } from "../ui/skeleton";
 
 export default function BodyWeightHistory() {
   const { data: history, isLoading, error } = useBodyWeightHistory();
@@ -39,8 +40,49 @@ export default function BodyWeightHistory() {
 
   const queryClient = useQueryClient();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoading || error || !history || history.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Body Weight History</CardTitle>
+          <CardDescription>
+            Manage your bodyweight and view your growth.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Weight</TableHead>
+                <TableHead>Recorded at</TableHead>
+                <TableHead>
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <TableRow key={index} className="h-[53px]">
+                  <TableCell className="font-medium">
+                    <Skeleton className="h-4 w-8 bg-muted/60" />
+                  </TableCell>
+                  <TableCell className="table-cell">
+                    <Skeleton className="h-4 w-24 bg-muted/60" />
+                  </TableCell>
+                  <TableCell>
+                    <MoreHorizontal className="h-4 w-4" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+        <CardFooter>
+          <Skeleton className="h-4 w-64 dark:bg-primary/30" />
+        </CardFooter>
+      </Card>
+    );
+  }
 
   const handleEdit = (entry: any) => {
     setSelectedEntry(entry);
@@ -105,11 +147,15 @@ export default function BodyWeightHistory() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => handleEdit(entry)}>
+                        <DropdownMenuItem
+                          onClick={() => handleEdit(entry)}
+                          className="cursor-pointer"
+                        >
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDelete(entry.id)}
+                          className="cursor-pointer"
                         >
                           Delete
                         </DropdownMenuItem>

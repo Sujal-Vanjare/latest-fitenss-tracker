@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   body_weight: {
@@ -36,13 +37,74 @@ export default function BodyWeightChart() {
   const { data: history, isLoading, error } = useBodyWeightHistory();
   const [timeRange, setTimeRange] = React.useState("all");
 
-  if (isLoading) {
-    return <div>Loading...</div>; // You might want to style this or use a skeleton loader
-  }
+  if (isLoading || error || !history || history.length === 0) {
+    return (
+      <Card className="grow">
+        <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 lg:flex-row">
+          <div className="flex w-full justify-between px-6 py-5 sm:py-6">
+            <div className="flex flex-col justify-center gap-1">
+              <CardTitle>Body Weight</CardTitle>
+              <div className="mt-1.5 flex gap-1 flex-wrap">
+                <Skeleton className="h-[18px] w-[88px] sm:h-[20px] dark:bg-primary/30" />
+                <Skeleton className="h-[18px] w-[88px] sm:h-[20px] dark:bg-primary/30" />
+              </div>
+            </div>
 
-  if (error || !history || history.length === 0) {
-    // Add check for history being undefined or empty
-    return <div>Error loading data</div>;
+            <div className="flex items-center">
+              <Select value={timeRange} onValueChange={setTimeRange}>
+                <SelectTrigger
+                  className="w-[130px] sm:w-[160px] text-xs sm:text-sm rounded-lg"
+                  aria-label="Select a value"
+                >
+                  <SelectValue placeholder="Last 3 months" />
+                </SelectTrigger>
+                <SelectContent className="w-[130px] sm:w-[160px] rounded-xl">
+                  <SelectItem
+                    value="all"
+                    className="rounded-lg text-xs sm:text-sm"
+                  >
+                    All Time
+                  </SelectItem>
+                  <SelectItem
+                    value="90d"
+                    className="rounded-lg text-xs sm:text-sm"
+                  >
+                    Last 3 months
+                  </SelectItem>
+                  <SelectItem
+                    value="30d"
+                    className="rounded-lg text-xs sm:text-sm"
+                  >
+                    Last 30 days
+                  </SelectItem>
+                  <SelectItem
+                    value="7d"
+                    className="rounded-lg text-xs sm:text-sm"
+                  >
+                    Last 7 days
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex lg:max-w-[500px] w-full">
+            <div className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l lg:border-t-0 sm:px-8 sm:py-6">
+              <Skeleton className="h-4 w-[80px] sm:w-[120px] dark:bg-primary/30" />
+              <Skeleton className="h-[19px] w-[40px] sm:w-[60px] sm:h-[36px] dark:bg-primary/30" />
+            </div>
+
+            <div className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l lg:border-t-0 sm:px-8 sm:py-6">
+              <Skeleton className="h-4 w-[80px] sm:w-[120px] dark:bg-primary/30" />
+              <Skeleton className="h-[19px] w-[40px] sm:w-[60px] sm:h-[36px] dark:bg-primary/30" />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="px-2 sm:p-6">
+          <Skeleton className="w-full h-[250px] bg-muted/60" />
+        </CardContent>
+      </Card>
+    );
   }
 
   const now = new Date();

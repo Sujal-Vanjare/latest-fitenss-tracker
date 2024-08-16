@@ -18,6 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   desktop: {
@@ -29,12 +30,22 @@ const chartConfig = {
 export default function BodyWeightBarChart() {
   const { data: history, isLoading, error } = useBodyWeightHistory();
 
-  if (isLoading) {
-    return <div>Loading...</div>; // Add loading state
-  }
-
-  if (error || !history) {
-    return <div>Error loading data</div>; // Add error handling
+  if (isLoading || error || !history || history.length === 0) {
+    return (
+      <Card className="2xl:h-[405px] 2xl:w-[400px]">
+        <CardHeader className="p-6 pb-0">
+          <CardTitle>Bar Chart</CardTitle>
+          <Skeleton className="h-5 w-44 mt-2 dark:bg-primary/30" />
+        </CardHeader>
+        <CardContent className="pt-6">
+          <Skeleton className="w-full h-[226px] bg-muted/60" />
+        </CardContent>
+        <CardFooter className="flex-col items-start gap-2 text-sm">
+          <Skeleton className="h-4 w-[200px] dark:bg-primary/30" />
+          <Skeleton className="h-3.5 w-[224px] dark:bg-primary/30" />
+        </CardFooter>
+      </Card>
+    );
   }
 
   const getLastSixMonthsData = (

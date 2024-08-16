@@ -57,8 +57,11 @@ export default function AddBodyWeight() {
         // Convert the body_weight to a number
         const bodyWeight = Number(formData.body_weight);
 
-        // Convert date to ISO string before storing in the database
-        const recordedAt = formData.recorded_at.toISOString();
+        // Adjust the date to remove timezone effects
+        const recordedAt = new Date(formData.recorded_at);
+        recordedAt.setMinutes(
+          recordedAt.getMinutes() - recordedAt.getTimezoneOffset()
+        );
 
         // Insert the new entry without bodyweight_change
         const { error: insertError } = await supabase
@@ -66,7 +69,7 @@ export default function AddBodyWeight() {
           .insert([
             {
               user_id: user?.id, // Add user_id to the new entry
-              recorded_at: recordedAt,
+              recorded_at: recordedAt.toISOString(),
               body_weight: bodyWeight,
             },
           ]);

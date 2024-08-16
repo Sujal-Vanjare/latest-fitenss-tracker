@@ -63,11 +63,18 @@ export function EditBodyWeightModal({
 
   const onSubmit = async (data: EditFormValues) => {
     const supabase = createSupabaseBrowser();
+
+    // Adjust the date to remove timezone effects
+    const adjustedDate = new Date(data.recorded_at);
+    adjustedDate.setMinutes(
+      adjustedDate.getMinutes() - adjustedDate.getTimezoneOffset()
+    );
+
     const { error } = await supabase
       .from("body_weight_entries")
       .update({
         body_weight: data.body_weight,
-        recorded_at: data.recorded_at.toISOString(),
+        recorded_at: adjustedDate.toISOString(),
       })
       .eq("id", entry.id);
 
@@ -146,6 +153,7 @@ export function EditBodyWeightModal({
                           date > new Date() || date < new Date("1900-01-01")
                         }
                         initialFocus
+                        defaultMonth={field.value || new Date()} // Use defaultMonth for initial focus
                       />
                     </PopoverContent>
                   </Popover>

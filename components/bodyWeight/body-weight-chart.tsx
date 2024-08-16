@@ -23,27 +23,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
 
 const chartConfig = {
   body_weight: {
     label: "Weight",
     color: "hsl(var(--chart-1))",
   },
-  bodyweight_change: {
-    label: "Weight Change",
-    color: "hsl(var(--chart-2))",
-  },
 } satisfies ChartConfig;
 
-export default function BodyWeightChart({
-  chartData,
-}: {
-  chartData: ChartEntry[];
-}) {
-  const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("body_weight");
-
+export default function BodyWeightChart() {
+  const { data: history, isLoading, error } = useBodyWeightHistory();
   const [timeRange, setTimeRange] = React.useState("all");
+
+  if (isLoading) {
+    return <div>Loading...</div>; // You might want to style this or use a skeleton loader
+  }
+
+  if (error || !history || history.length === 0) {
+    // Add check for history being undefined or empty
+    return <div>Error loading data</div>;
+  }
 
   const now = new Date();
   let startDate: Date;
@@ -53,18 +53,20 @@ export default function BodyWeightChart({
   } else if (timeRange === "7d") {
     startDate = new Date(now.setDate(now.getDate() - 7));
   } else if (timeRange === "all") {
-    // For "All Time", set startDate to a very early date
     startDate = new Date(
-      Math.min(...chartData.map((item) => new Date(item.recorded_at).getTime()))
+      Math.min(...history.map((item) => new Date(item.recorded_at).getTime()))
     );
   } else {
     startDate = new Date(now.setDate(now.getDate() - 90));
   }
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.recorded_at);
-    return date >= startDate;
-  });
+  // Filter and sort the data by date
+  const filteredData = history
+    .filter((item) => new Date(item.recorded_at) >= startDate)
+    .sort(
+      (a, b) =>
+        new Date(a.recorded_at).getTime() - new Date(b.recorded_at).getTime()
+    );
 
   const currentWeight =
     filteredData.length > 0
@@ -81,7 +83,7 @@ export default function BodyWeightChart({
     <Card className="grow">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 lg:flex-row">
         <div className="flex w-full justify-between px-6 py-5 sm:py-6">
-          <div className="flex flex-col justify-center gap-1 ">
+          <div className="flex flex-col justify-center gap-1">
             <CardTitle>Body Weight</CardTitle>
             <CardDescription className="mt-1.5">
               {startDate.toLocaleDateString("en-US", {
@@ -137,11 +139,7 @@ export default function BodyWeightChart({
         </div>
 
         <div className="flex lg:max-w-[500px] w-full">
-          <button
-            data-active={activeChart === "body_weight"}
-            className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/80 sm:border-l lg:border-t-0 sm:px-8 sm:py-6"
-            onClick={() => setActiveChart("body_weight")}
-          >
+          <div className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l lg:border-t-0 sm:px-8 sm:py-6">
             <span className="text-xs text-muted-foreground">
               Current Weight
             </span>
@@ -149,20 +147,16 @@ export default function BodyWeightChart({
               {currentWeight.toLocaleString()}{" "}
               <span className="text-xs">Kg</span>
             </span>
-          </button>
+          </div>
 
-          <button
-            data-active={activeChart === "bodyweight_change"}
-            className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/80 sm:border-l lg:border-t-0 sm:px-8 sm:py-6"
-            onClick={() => setActiveChart("bodyweight_change")}
-          >
+          <div className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l lg:border-t-0 sm:px-8 sm:py-6">
             <span className="text-xs text-muted-foreground">
               {weightChange > 0 ? (
                 <span className="text-green-600 dark:text-green-400">
                   Gained
                 </span>
               ) : weightChange < 0 ? (
-                <span className="text-red-600 dark:text-red-400">Loosed</span>
+                <span className="text-red-600 dark:text-red-400">Lost</span>
               ) : (
                 "No Change"
               )}
@@ -171,7 +165,7 @@ export default function BodyWeightChart({
               {weightChange.toLocaleString()}{" "}
               <span className="text-xs">Kg</span>
             </span>
-          </button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
@@ -218,9 +212,9 @@ export default function BodyWeightChart({
               }
             />
             <Line
-              dataKey={activeChart}
+              dataKey="body_weight"
               type="monotone"
-              stroke={`var(--color-${activeChart})`}
+              stroke={`var(--color-body_weight)`}
               strokeWidth={2}
               dot={false}
             />

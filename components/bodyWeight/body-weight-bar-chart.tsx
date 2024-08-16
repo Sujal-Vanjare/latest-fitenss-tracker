@@ -17,6 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
 
 const chartConfig = {
   desktop: {
@@ -25,14 +26,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function BodyWeightBarChart({
-  chartData,
-}: {
-  chartData: ChartEntry[];
-}) {
-  // Update getLastSixMonthsData to return both the data and the month count
+export default function BodyWeightBarChart() {
+  const { data: history, isLoading, error } = useBodyWeightHistory();
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Add loading state
+  }
+
+  if (error || !history) {
+    return <div>Error loading data</div>; // Add error handling
+  }
+
   const getLastSixMonthsData = (
-    data: ChartEntry[]
+    data: BodyWeightEntry[]
   ): { monthsData: MonthlyData[]; monthCount: number } => {
     const lastSixMonthsData: MonthlyData[] = [];
     const uniqueMonths = new Map<string, number>();
@@ -44,48 +50,44 @@ export default function BodyWeightBarChart({
         year: "numeric",
       });
 
-      // Update the map with the latest weight for the month
       uniqueMonths.set(month, entry.body_weight);
     });
 
-    // Convert the map back to an array and get the last 6 months
-    const sortedMonths = Array.from(uniqueMonths.entries()).slice(-6);
-
-    // Create the final result in the correct format
-    sortedMonths.forEach(([month, weight]) => {
-      lastSixMonthsData.push({ month, weight });
+    // Convert the map to an array and sort by date
+    const sortedMonths = Array.from(uniqueMonths.keys()).sort((a, b) => {
+      const dateA = new Date(a);
+      const dateB = new Date(b);
+      return dateA.getTime() - dateB.getTime();
     });
 
-    // Return both data and the count of unique months
+    // Get the last 6 months
+    const lastSixMonths = sortedMonths.slice(-6);
+
+    // Create the final result in the correct format
+    lastSixMonths.forEach((month) => {
+      lastSixMonthsData.push({ month, weight: uniqueMonths.get(month)! });
+    });
+
     return {
       monthsData: lastSixMonthsData,
       monthCount: lastSixMonthsData.length,
     };
   };
 
-  const { monthsData: monthlyData, monthCount } =
-    getLastSixMonthsData(chartData);
+  const { monthsData: monthlyData, monthCount } = getLastSixMonthsData(history);
 
   const weightChangeLastSixMonths =
     monthlyData.length > 1
       ? monthlyData[monthlyData.length - 1].weight - monthlyData[0].weight
-      : 0; // Handle case where not enough data is available
+      : 0;
 
-  // Adjust the display message based on the number of available months
   const monthsText =
     monthCount > 1 ? `${monthCount} months` : `${monthCount} month`;
 
-  // Extract only the month names for the date range
   const startMonth = monthlyData[0].month.split(" ")[0];
   const endMonthYear = monthlyData[monthlyData.length - 1].month.split(" ");
   const dateRangeDescription = `${startMonth} - ${endMonthYear[0]} ${endMonthYear[1]}`;
 
-  const calculateWeightChange = (data: MonthlyData[]): number => {
-    if (data.length === 0) return 0;
-    const firstMonthWeight = data[0].weight;
-    const lastMonthWeight = data[data.length - 1].weight;
-    return lastMonthWeight - firstMonthWeight;
-  };
   return (
     <Card className="2xl:h-[405px] 2xl:w-[400px]">
       <CardHeader className="pb-0">

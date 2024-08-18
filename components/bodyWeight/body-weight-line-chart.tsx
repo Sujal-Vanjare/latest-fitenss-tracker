@@ -33,7 +33,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function BodyWeightChart() {
+export default function BodyWeightLineChart() {
   const { data: history, isLoading, error } = useBodyWeightHistory();
   const [timeRange, setTimeRange] = React.useState("all");
 

@@ -1,13 +1,13 @@
 import AddBodyWeight from "@/components/bodyWeight/add-body-weight";
 import BodyWeightBarChart from "@/components/bodyWeight/body-weight-bar-chart";
-import BodyWeightChart from "@/components/bodyWeight/body-weight-chart";
 import BodyWeightHistory from "@/components/bodyWeight/body-weight-history";
+import BodyWeightLineChart from "@/components/bodyWeight/body-weight-line-chart";
 
 export default function Page() {
   return (
     <>
       <section className="flex flex-col 2xl:flex-row gap-3 p-2">
-        <BodyWeightChart />
+        <BodyWeightLineChart />
         <BodyWeightBarChart />
       </section>
       <section className="flex flex-col 2xl:flex-row gap-3 p-2">

@@ -16,7 +16,7 @@ export default function Page() {
           <BodyWeightHistory />
         </div>
 
-        <div className="2xl:w-[400px]">ads</div>
+        <div className="2xl:w-[400px]"></div>
       </section>
     </>
   );

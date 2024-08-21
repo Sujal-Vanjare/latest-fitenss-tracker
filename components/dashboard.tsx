@@ -1,16 +1,6 @@
 "use client";
 import Link from "next/link";
-import {
-  Bell,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { Bell, Home, LineChart, Menu, Package2, Search } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,10 +20,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ModeToggle } from "./mode-toggle";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import UserProfile from "./auth/user-profile";
+import useExercises from "@/app/hook/useExercises";
+import slugify from "slugify";
 
 export function Dashboard({
   children,
@@ -41,6 +39,53 @@ export function Dashboard({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  // Fetch exercises for each category
+  const {
+    data: pushExercises,
+    error: pushError,
+    isLoading: pushLoading,
+  } = useExercises("Push");
+  const {
+    data: pullExercises,
+    error: pullError,
+    isLoading: pullLoading,
+  } = useExercises("Pull");
+  const {
+    data: legsExercises,
+    error: legsError,
+    isLoading: legsLoading,
+  } = useExercises("Legs");
+
+  // Helper function to render exercises or a loading/error state
+  const renderExercises = (
+    exercises: any[],
+    isLoading: boolean,
+    error: Error | null
+  ) => {
+    if (isLoading) return <p>Loading exercises...</p>;
+    if (error) return <p>Error loading exercises: {error.message}</p>;
+
+    return exercises.map((exercise) => {
+      // slug
+      const categorySlug = slugify(exercise.category_name, { lower: true });
+      const exerciseSlug = slugify(exercise.name, { lower: true });
+      const href = `/workout/${categorySlug}/${exerciseSlug}`;
+
+      return (
+        <Link
+          key={exercise.id}
+          href={href}
+          className={cn(
+            "flex items-center gap-3 rounded-lg px-4 py-2 text-muted-foreground transition-all hover:text-primary",
+            pathname === href ? "bg-muted text-primary" : ""
+          )}
+        >
+          <LineChart className="h-4 w-4 shrink-0" />
+          {exercise.name}
+        </Link>
+      );
+    });
+  };
 
   return (
     <div className="fixed grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -68,43 +113,54 @@ export function Dashboard({
                 <Home className="h-4 w-4" />
                 Body Weight
               </Link>
-              <Link
-                href="/push-day"
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                  pathname === "/push-day" ? "bg-muted text-primary" : ""
-                )}
-              >
-                <ShoppingCart className="h-4 w-4" />
-                Push Day
-                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  6
-                </Badge>
-              </Link>
-              <Link
-                href="#"
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                  pathname === "/calories" ? "bg-muted text-primary" : ""
-                )}
-              >
-                <Package className="h-4 w-4" />
-                Pull Day{" "}
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Users className="h-4 w-4" />
-                Legs Day
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <LineChart className="h-4 w-4" />
-                Arms Day
-              </Link>
+
+              <Accordion type="single" collapsible className="w-full">
+                <p className="text-xs font-extralight text-muted-foreground pt-4 pb-1 pl-2">
+                  Workouts
+                </p>
+
+                {/* Push Day */}
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                    Push Day
+                  </AccordionTrigger>
+                  <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                    {renderExercises(
+                      pushExercises || [],
+                      pushLoading,
+                      pushError
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+
+                {/* Pull Day */}
+                <AccordionItem value="item-2">
+                  <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                    Pull Day
+                  </AccordionTrigger>
+                  <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                    {renderExercises(
+                      pullExercises || [],
+                      pullLoading,
+                      pullError
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+
+                {/* Legs Day */}
+                <AccordionItem value="item-3">
+                  <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                    Legs Day
+                  </AccordionTrigger>
+                  <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                    {renderExercises(
+                      legsExercises || [],
+                      legsLoading,
+                      legsError
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </nav>
           </div>
           <div className="mt-auto p-4">
@@ -138,73 +194,98 @@ export function Dashboard({
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
+            <SheetContent side="left" className="flex flex-col gap-2 p-0">
               <SheetTitle className="sr-only">Navbar</SheetTitle>
               <SheetDescription className="sr-only">
                 Navigate to pages
               </SheetDescription>
-              <nav className="grid gap-2 text-lg font-medium">
+              <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                 <Link
                   href="/"
-                  className="flex items-center gap-4 mx-[-0.65rem] px-3 py-4"
+                  className="flex items-center gap-2 font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
-                  <span className="text-xl font-bold">Fitness Tracker</span>
+                  <span className="">Fitness Tracker</span>
                 </Link>
-                <Link
-                  href="/body-weight"
-                  className={cn(
-                    "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
-                    pathname === "/body-weight"
-                      ? "bg-muted text-foreground"
-                      : ""
-                  )}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="ml-auto mr-7 h-8 w-8"
                 >
-                  <Home className="h-5 w-5" />
-                  Body Weight
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  Push Day
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                    6
-                  </Badge>
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Pull Day
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Users className="h-5 w-5" />
-                  Legs Day
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <LineChart className="h-5 w-5" />
-                  Arms Day
-                </Link>
-              </nav>
-              <div className="mt-auto">
+                  <Bell className="h-4 w-4" />
+                  <span className="sr-only">Toggle notifications</span>
+                </Button>
+              </div>
+              <div className="flex-1">
+                <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                  <Link
+                    href="/body-weight"
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                      pathname === "/body-weight" ? "bg-muted text-primary" : ""
+                    )}
+                  >
+                    <Home className="h-4 w-4" />
+                    Body Weight
+                  </Link>
+                  <Accordion type="single" collapsible className="w-full">
+                    <p className="text-xs font-extralight text-muted-foreground pt-4 pb-1 pl-2">
+                      Workouts
+                    </p>
+                    {/* Push Day */}
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                        Push Day
+                      </AccordionTrigger>
+                      <AccordionContent className="vertical-scrollbar max-h-[38vh] [@media_(min-height:640px):h-[28vh]] sm overflow-y-auto">
+                        {renderExercises(
+                          pushExercises || [],
+                          pushLoading,
+                          pushError
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    {/* Pull Day */}
+                    <AccordionItem value="item-2">
+                      <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                        Pull Day
+                      </AccordionTrigger>
+                      <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                        {renderExercises(
+                          pullExercises || [],
+                          pullLoading,
+                          pullError
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    {/* Legs Day */}
+                    <AccordionItem value="item-3">
+                      <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                        Legs Day
+                      </AccordionTrigger>
+                      <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                        {renderExercises(
+                          legsExercises || [],
+                          legsLoading,
+                          legsError
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </nav>
+              </div>
+              <div className="mt-auto p-4">
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="p-4">
                     <CardTitle>Upgrade to Pro</CardTitle>
                     <CardDescription>
                       Unlock all features and get unlimited access to our
                       support team.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="px-3 pb-3">
                     <Button size="sm" className="w-full">
                       Upgrade
                     </Button>

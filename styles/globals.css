@@ -67,3 +67,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom scrollbar styling */
+.vertical-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Change this to your desired width */
+}
+
+.vertical-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(
+    var(--muted-foreground)
+  ); /* Use the variable for thumb color */
+}
+
+.vertical-scrollbar::-webkit-scrollbar-track {
+  background: hsl(var(--muted)); /* Use the variable for track color */
+}

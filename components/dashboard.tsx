@@ -1,6 +1,14 @@
 "use client";
 import Link from "next/link";
-import { Bell, Home, LineChart, Menu, Package2, Search } from "lucide-react";
+import { LiaWeightSolid } from "react-icons/lia";
+import {
+  Bell,
+  Dumbbell,
+  LineChart,
+  Menu,
+  Package2,
+  Search,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -74,12 +82,12 @@ export function Dashboard({
           key={exercise.id}
           href={href}
           className={cn(
-            "flex items-center gap-3 rounded-lg px-4 py-2 text-muted-foreground transition-all hover:text-primary",
+            "flex items-center gap-3 rounded-lg px-4 text-muted-foreground transition-all hover:text-primary",
             pathname === href ? "bg-muted text-primary" : ""
           )}
         >
-          <LineChart className="h-4 w-4 shrink-0" />
-          {exercise.name}
+          <Dumbbell className="h-4 w-4 shrink-0" />
+          <span className="py-2">{exercise.name}</span>
         </Link>
       );
     });
@@ -104,12 +112,12 @@ export function Dashboard({
               <Link
                 href="/body-weight"
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                  "flex items-center gap-2 rounded-lg px-3 text-muted-foreground transition-all hover:text-primary",
                   pathname === "/body-weight" ? "bg-muted text-primary" : ""
                 )}
               >
-                <Home className="h-4 w-4" />
-                Body Weight
+                <LiaWeightSolid className="h-6 w-6" />
+                <span className="py-2">Body Weight</span>
               </Link>
               <Accordion type="single" collapsible className="w-full">
                 <p className="text-xs font-extralight text-muted-foreground pt-4 pb-1 pl-2">
@@ -223,7 +231,7 @@ export function Dashboard({
         </div>
       </div>
       <div className="flex flex-col h-screen">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center gap-3 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -262,12 +270,12 @@ export function Dashboard({
                   <Link
                     href="/body-weight"
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                      "flex items-center gap-2 rounded-lg px-3 text-muted-foreground transition-all hover:text-primary",
                       pathname === "/body-weight" ? "bg-muted text-primary" : ""
                     )}
                   >
-                    <Home className="h-4 w-4" />
-                    Body Weight
+                    <LiaWeightSolid className="h-6 w-6" />
+                    <span className="py-2">Body Weight</span>
                   </Link>
                   <Accordion type="single" collapsible className="w-full">
                     <p className="text-xs font-extralight text-muted-foreground pt-4 pb-1 pl-2">

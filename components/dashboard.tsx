@@ -1,8 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Bell, Home, LineChart, Menu, Package2, Search } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -113,18 +111,31 @@ export function Dashboard({
                 <Home className="h-4 w-4" />
                 Body Weight
               </Link>
-
               <Accordion type="single" collapsible className="w-full">
                 <p className="text-xs font-extralight text-muted-foreground pt-4 pb-1 pl-2">
                   Workouts
                 </p>
-
                 {/* Push Day */}
                 <AccordionItem value="item-1">
-                  <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                  <AccordionTrigger
+                    className={cn(
+                      "px-3 py-2 transition-all hover:text-primary hover:no-underline",
+                      pathname.includes("/workout/push")
+                        ? "text-primary"
+                        : "text-muted-foreground "
+                    )}
+                  >
                     Push Day
+                    <div
+                      className={cn(
+                        "h-2 w-2 rounded-full bg-primary ml-auto mr-2",
+                        pathname.includes("/workout/push") ? "" : "hidden"
+                      )}
+                    >
+                      <span className="sr-only">Current section: Push Day</span>
+                    </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
                     {renderExercises(
                       pushExercises || [],
                       pushLoading,
@@ -135,10 +146,25 @@ export function Dashboard({
 
                 {/* Pull Day */}
                 <AccordionItem value="item-2">
-                  <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                  <AccordionTrigger
+                    className={cn(
+                      "px-3 py-2 transition-all hover:text-primary hover:no-underline",
+                      pathname.includes("/workout/pull")
+                        ? "text-primary"
+                        : "text-muted-foreground "
+                    )}
+                  >
                     Pull Day
+                    <div
+                      className={cn(
+                        "h-2 w-2 rounded-full bg-primary ml-auto mr-2",
+                        pathname.includes("/workout/pull") ? "" : "hidden"
+                      )}
+                    >
+                      <span className="sr-only">Current section: Pull Day</span>
+                    </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
                     {renderExercises(
                       pullExercises || [],
                       pullLoading,
@@ -149,10 +175,25 @@ export function Dashboard({
 
                 {/* Legs Day */}
                 <AccordionItem value="item-3">
-                  <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                  <AccordionTrigger
+                    className={cn(
+                      "px-3 py-2 transition-all hover:text-primary hover:no-underline",
+                      pathname.includes("/workout/legs")
+                        ? "text-primary"
+                        : "text-muted-foreground "
+                    )}
+                  >
                     Legs Day
+                    <div
+                      className={cn(
+                        "h-2 w-2 rounded-full bg-primary ml-auto mr-2",
+                        pathname.includes("/workout/legs") ? "" : "hidden"
+                      )}
+                    >
+                      <span className="sr-only">Current section: Legs Day</span>
+                    </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
                     {renderExercises(
                       legsExercises || [],
                       legsLoading,
@@ -234,10 +275,27 @@ export function Dashboard({
                     </p>
                     {/* Push Day */}
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                      <AccordionTrigger
+                        className={cn(
+                          "px-3 py-2 transition-all hover:text-primary hover:no-underline",
+                          pathname.includes("/workout/push")
+                            ? "text-primary"
+                            : "text-muted-foreground "
+                        )}
+                      >
                         Push Day
+                        <div
+                          className={cn(
+                            "h-2 w-2 rounded-full bg-primary ml-auto mr-2",
+                            pathname.includes("/workout/push") ? "" : "hidden"
+                          )}
+                        >
+                          <span className="sr-only">
+                            Current section: Push Day
+                          </span>
+                        </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[38vh] [@media_(min-height:640px):h-[28vh]] sm overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
                         {renderExercises(
                           pushExercises || [],
                           pushLoading,
@@ -248,10 +306,27 @@ export function Dashboard({
 
                     {/* Pull Day */}
                     <AccordionItem value="item-2">
-                      <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                      <AccordionTrigger
+                        className={cn(
+                          "px-3 py-2 transition-all hover:text-primary hover:no-underline",
+                          pathname.includes("/workout/pull")
+                            ? "text-primary"
+                            : "text-muted-foreground "
+                        )}
+                      >
                         Pull Day
+                        <div
+                          className={cn(
+                            "h-2 w-2 rounded-full bg-primary ml-auto mr-2",
+                            pathname.includes("/workout/pull") ? "" : "hidden"
+                          )}
+                        >
+                          <span className="sr-only">
+                            Current section: Pull Day
+                          </span>
+                        </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
                         {renderExercises(
                           pullExercises || [],
                           pullLoading,
@@ -262,10 +337,27 @@ export function Dashboard({
 
                     {/* Legs Day */}
                     <AccordionItem value="item-3">
-                      <AccordionTrigger className="px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline">
+                      <AccordionTrigger
+                        className={cn(
+                          "px-3 py-2 transition-all hover:text-primary hover:no-underline",
+                          pathname.includes("/workout/legs")
+                            ? "text-primary"
+                            : "text-muted-foreground "
+                        )}
+                      >
                         Legs Day
+                        <div
+                          className={cn(
+                            "h-2 w-2 rounded-full bg-primary ml-auto mr-2",
+                            pathname.includes("/workout/legs") ? "" : "hidden"
+                          )}
+                        >
+                          <span className="sr-only">
+                            Current section: Legs Day
+                          </span>
+                        </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[38vh] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
                         {renderExercises(
                           legsExercises || [],
                           legsLoading,

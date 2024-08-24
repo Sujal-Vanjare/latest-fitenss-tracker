@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/dialog";
 import { CircleUser } from "lucide-react";
 import { cn } from "@/lib/utils";
-import useUser from "@/app/hook/useUser";
+
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { FaGithub, FaDiscord } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Avatar from "./avatar";
+import useUser from "@/hook/useUser";
 
 export type IconKey = "email" | "github" | "discord" | "google";
 

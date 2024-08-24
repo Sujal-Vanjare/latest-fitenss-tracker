@@ -27,7 +27,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
-import useUser from "@/app/hook/useUser";
+import useUser from "@/hook/useUser";
 
 // Define the schema for form validation using zod
 const FormSchema = z.object({

@@ -1,4 +1,4 @@
-import useUser from "@/app/hook/useUser";
+import useUser from "@/hook/useUser";
 import { cn } from "@/lib/utils";
 import { CircleUser } from "lucide-react";
 import Image from "next/image";

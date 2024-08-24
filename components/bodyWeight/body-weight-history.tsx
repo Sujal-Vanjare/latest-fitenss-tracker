@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
-import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
+import { useBodyWeightHistory } from "@/hook/useBodyWeightHistory";
 import { EditBodyWeightModal } from "./edit-body-weight-modal";
 import { toast } from "sonner";
 import { createSupabaseBrowser } from "@/lib/supabase/client";

@@ -23,8 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
 import { Skeleton } from "../ui/skeleton";
+import { useBodyWeightHistory } from "@/hook/useBodyWeightHistory";
 
 const chartConfig = {
   body_weight: {

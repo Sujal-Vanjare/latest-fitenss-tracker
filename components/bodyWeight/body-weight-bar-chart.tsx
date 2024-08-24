@@ -17,7 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useBodyWeightHistory } from "@/app/hook/useBodyWeightHistory";
+import { useBodyWeightHistory } from "@/hook/useBodyWeightHistory";
 import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {

@@ -29,47 +29,23 @@ import { ModeToggle } from "./mode-toggle";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import UserProfile from "./auth/user-profile";
-import useExercises from "@/app/hook/useExercises";
 import slugify from "slugify";
 
 export function Dashboard({
   children,
+  exercises,
 }: Readonly<{
   children: React.ReactNode;
+  exercises: any;
 }>) {
   const pathname = usePathname();
-  // Fetch exercises for each category
-  const {
-    data: pushExercises,
-    error: pushError,
-    isLoading: pushLoading,
-  } = useExercises("Push");
-  const {
-    data: pullExercises,
-    error: pullError,
-    isLoading: pullLoading,
-  } = useExercises("Pull");
-  const {
-    data: legsExercises,
-    error: legsError,
-    isLoading: legsLoading,
-  } = useExercises("Legs");
+  const { push, pull, legs } = exercises;
 
-  // Helper function to render exercises or a loading/error state
-  const renderExercises = (
-    exercises: any[],
-    isLoading: boolean,
-    error: Error | null
-  ) => {
-    if (isLoading) return <p>Loading exercises...</p>;
-    if (error) return <p>Error loading exercises: {error.message}</p>;
-
+  const renderExercises = (exercises: any[]) => {
     return exercises.map((exercise) => {
-      // slug
       const categorySlug = slugify(exercise.category_name, { lower: true });
       const exerciseSlug = slugify(exercise.name, { lower: true });
       const href = `/workout/${categorySlug}/${exerciseSlug}`;
-
       return (
         <Link
           key={exercise.id}
@@ -90,7 +66,7 @@ export function Dashboard({
     <div className="fixed grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-dvh flex-col gap-2">
-          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+          <div className="flex shrink-0 h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6" />
               <span>Fitness Tracker</span>
@@ -137,11 +113,7 @@ export function Dashboard({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
-                    {renderExercises(
-                      pushExercises || [],
-                      pushLoading,
-                      pushError
-                    )}
+                    {renderExercises(push)}
                   </AccordionContent>
                 </AccordionItem>
 
@@ -166,11 +138,7 @@ export function Dashboard({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
-                    {renderExercises(
-                      pullExercises || [],
-                      pullLoading,
-                      pullError
-                    )}
+                    {renderExercises(pull)}
                   </AccordionContent>
                 </AccordionItem>
 
@@ -195,11 +163,7 @@ export function Dashboard({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
-                    {renderExercises(
-                      legsExercises || [],
-                      legsLoading,
-                      legsError
-                    )}
+                    {renderExercises(legs)}
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -241,7 +205,7 @@ export function Dashboard({
               <SheetDescription className="sr-only">
                 Navigate to pages
               </SheetDescription>
-              <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+              <div className="flex shrink-0 h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                 <Link
                   href="/"
                   className="flex items-center gap-2 font-semibold"
@@ -297,11 +261,7 @@ export function Dashboard({
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
-                        {renderExercises(
-                          pushExercises || [],
-                          pushLoading,
-                          pushError
-                        )}
+                        {renderExercises(push)}
                       </AccordionContent>
                     </AccordionItem>
 
@@ -328,11 +288,7 @@ export function Dashboard({
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
-                        {renderExercises(
-                          pullExercises || [],
-                          pullLoading,
-                          pullError
-                        )}
+                        {renderExercises(pull)}
                       </AccordionContent>
                     </AccordionItem>
 
@@ -359,11 +315,7 @@ export function Dashboard({
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
-                        {renderExercises(
-                          legsExercises || [],
-                          legsLoading,
-                          legsError
-                        )}
+                        {renderExercises(legs)}
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>

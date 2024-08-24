@@ -1,9 +1,11 @@
 import { Dashboard } from "@/components/dashboard";
+import { getAllExercises } from "@/data/fetchExercises";
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <Dashboard>{children}</Dashboard>;
+  const exercises = await getAllExercises();
+  return <Dashboard exercises={exercises}>{children}</Dashboard>;
 }

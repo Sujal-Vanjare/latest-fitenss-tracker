@@ -2,8 +2,9 @@
 
 import { createSupabaseBrowser } from "@/lib/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import useUser from "@/app/hook/useUser";
+
 import { useEffect } from "react";
+import useUser from "./useUser";
 
 export function useBodyWeightHistory() {
   const { data: user } = useUser();

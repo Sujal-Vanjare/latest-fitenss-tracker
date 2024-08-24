@@ -87,9 +87,9 @@ export function Dashboard({
   };
 
   return (
-    <div className="fixed grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="fixed grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-screen flex-col gap-2">
+        <div className="flex h-dvh flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6" />
@@ -136,7 +136,7 @@ export function Dashboard({
                       <span className="sr-only">Current section: Push Day</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
                     {renderExercises(
                       pushExercises || [],
                       pushLoading,
@@ -165,7 +165,7 @@ export function Dashboard({
                       <span className="sr-only">Current section: Pull Day</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
                     {renderExercises(
                       pullExercises || [],
                       pullLoading,
@@ -194,7 +194,7 @@ export function Dashboard({
                       <span className="sr-only">Current section: Legs Day</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
                     {renderExercises(
                       legsExercises || [],
                       legsLoading,
@@ -223,7 +223,7 @@ export function Dashboard({
           </div>
         </div>
       </div>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-dvh">
         <header className="flex h-14 items-center gap-3 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
@@ -296,7 +296,7 @@ export function Dashboard({
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
                         {renderExercises(
                           pushExercises || [],
                           pushLoading,
@@ -327,7 +327,7 @@ export function Dashboard({
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
                         {renderExercises(
                           pullExercises || [],
                           pullLoading,
@@ -358,7 +358,7 @@ export function Dashboard({
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[calc(100vh-458px)] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
                         {renderExercises(
                           legsExercises || [],
                           legsLoading,

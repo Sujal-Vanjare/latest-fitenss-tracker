@@ -31,12 +31,9 @@ const FormSchema = z.object({
 });
 
 export default function SignIn() {
-  const queryString =
-    typeof window !== "undefined" ? window?.location.search : "";
-  const urlParams = new URLSearchParams(queryString);
-
   // Get the value of the 'next' parameter
-  const next = urlParams.get("next");
+  const searchParams = useSearchParams();
+  const next = searchParams?.get("next") || "/";
 
   return (
     <div className="w-full sm:w-[26rem] shadow sm:p-5  border dark:border-zinc-800 rounded-md">
@@ -52,14 +49,14 @@ export default function SignIn() {
           <h1 className="font-bold">Sign in to SupaAuth</h1>
           <p className="text-sm">Welcome back! Please sign in to continue</p>
         </div>
-        <Social redirectTo={next || "/"} />
+        <Social redirectTo={next} />
         <div className="flex items-center gap-5">
           <div className="flex-1 h-[0.5px] w-full bg-zinc-400 dark:bg-zinc-800"></div>
           <div className="text-sm">or</div>
           <div className="flex-1 h-[0.5px] w-full bg-zinc-400 dark:bg-zinc-800"></div>
         </div>
         {/* <SignInForm redirectTo={next || "/"} /> */}
-        <AlreadyHaveAccount redirectTo={next || "/"} />
+        <AlreadyHaveAccount redirectTo={next} />
       </div>
     </div>
   );

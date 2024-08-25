@@ -35,7 +35,9 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function BodyWeightHistory() {
   const { data: history, isLoading, error } = useBodyWeightHistory();
-  const [selectedEntry, setSelectedEntry] = useState<any>(null);
+  const [selectedEntry, setSelectedEntry] = useState<BodyWeightEntry | null>(
+    null
+  );
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
@@ -84,7 +86,7 @@ export default function BodyWeightHistory() {
     );
   }
 
-  const handleEdit = (entry: any) => {
+  const handleEdit = (entry: BodyWeightEntry) => {
     setSelectedEntry(entry);
     setEditModalOpen(true);
   };
@@ -100,7 +102,9 @@ export default function BodyWeightHistory() {
       toast.error(error.message);
     } else {
       toast.success("Body weight deleted successfully!");
-      queryClient.invalidateQueries(["body_weight_history"] as any);
+      queryClient.invalidateQueries({
+        queryKey: ["body_weight_history"],
+      });
     }
   };
 

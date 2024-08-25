@@ -36,12 +36,16 @@ export function Dashboard({
   exercises,
 }: Readonly<{
   children: React.ReactNode;
-  exercises: any;
+  exercises: {
+    push: Exercise[];
+    pull: Exercise[];
+    legs: Exercise[];
+  };
 }>) {
   const pathname = usePathname();
   const { push, pull, legs } = exercises;
 
-  const renderExercises = (exercises: any[]) => {
+  const renderExercises = (exercises: Exercise[]) => {
     return exercises.map((exercise) => {
       const categorySlug = slugify(exercise.category_name, { lower: true });
       const exerciseSlug = slugify(exercise.name, { lower: true });

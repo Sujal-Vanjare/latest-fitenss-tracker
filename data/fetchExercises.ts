@@ -17,8 +17,6 @@ export async function getExercises(categoryName: string) {
 }
 
 export async function getAllExercises() {
-  const supabase = createSupabaseServer();
-
   const [push, pull, legs] = await Promise.all([
     getExercises("Push"),
     getExercises("Pull"),

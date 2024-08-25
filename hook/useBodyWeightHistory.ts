@@ -53,7 +53,9 @@ export function useBodyWeightHistory() {
         },
         (payload) => {
           // Invalidate the query to refetch data
-          queryClient.invalidateQueries(queryKey as any);
+          queryClient.invalidateQueries({
+            queryKey,
+          });
         }
       )
       .subscribe();

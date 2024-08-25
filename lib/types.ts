@@ -8,3 +8,11 @@ type BodyWeightEntry = {
   body_weight: number;
   recorded_at: string;
 };
+
+type Exercise = {
+  id: string;
+  category_name: string;
+  name: string;
+  created_at: string;
+  order: number;
+};

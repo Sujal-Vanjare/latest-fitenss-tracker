@@ -82,7 +82,9 @@ export function EditBodyWeightModal({
       toast.error(error.message);
     } else {
       toast.success("Body weight updated successfully!");
-      queryClient.invalidateQueries(["body_weight_history"] as any);
+      queryClient.invalidateQueries({
+        queryKey: ["body_weight_history"],
+      });
       onClose();
     }
   };

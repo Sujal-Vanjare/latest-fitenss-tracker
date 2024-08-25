@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function page() {
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-dvh">
       <Suspense fallback={<div>Loading...</div>}>
         <Register />
       </Suspense>

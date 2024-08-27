@@ -106,6 +106,9 @@ export default function AddBodyWeight() {
                     value={field.value || ""}
                     onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number on change
                     required
+                    min={1}
+                    max={200}
+                    step={0.01}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />

@@ -6,13 +6,21 @@ type MonthlyData = {
 type BodyWeightEntry = {
   id: number;
   body_weight: number;
-  recorded_at: string;
+  recorded_at: Date;
 };
 
 type Exercise = {
-  id: string;
-  category_name: string;
+  id: number;
   name: string;
-  created_at: string;
+  created_at: Date;
+  category_name: string;
   order: number;
+};
+
+type WorkoutEntry = {
+  id: number;
+  weight: number;
+  sets: number;
+  recorded_at: Date;
+  reps_per_set: number[];
 };

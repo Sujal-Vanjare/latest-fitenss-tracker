@@ -114,6 +114,9 @@ export function EditBodyWeightModal({
                       value={field.value || ""}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                       required
+                      min={1}
+                      max={200}
+                      step={0.01}
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />

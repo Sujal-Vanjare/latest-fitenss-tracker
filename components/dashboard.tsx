@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { LiaWeightSolid } from "react-icons/lia";
 import { Bell, Dumbbell, Menu, Package2, Search } from "lucide-react";
@@ -116,7 +117,7 @@ export function Dashboard({
                       <span className="sr-only">Current section: Push Day</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto pr-1">
                     {renderExercises(push)}
                   </AccordionContent>
                 </AccordionItem>
@@ -141,7 +142,7 @@ export function Dashboard({
                       <span className="sr-only">Current section: Pull Day</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto pr-1">
                     {renderExercises(pull)}
                   </AccordionContent>
                 </AccordionItem>
@@ -166,7 +167,7 @@ export function Dashboard({
                       <span className="sr-only">Current section: Legs Day</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
+                  <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto pr-1">
                     {renderExercises(legs)}
                   </AccordionContent>
                 </AccordionItem>
@@ -264,7 +265,7 @@ export function Dashboard({
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto pr-1">
                         {renderExercises(push)}
                       </AccordionContent>
                     </AccordionItem>
@@ -291,7 +292,7 @@ export function Dashboard({
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto pr-1">
                         {renderExercises(pull)}
                       </AccordionContent>
                     </AccordionItem>
@@ -318,7 +319,7 @@ export function Dashboard({
                           </span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto">
+                      <AccordionContent className="vertical-scrollbar max-h-[calc(100dvh-458px)] overflow-y-auto pr-1">
                         {renderExercises(legs)}
                       </AccordionContent>
                     </AccordionItem>
@@ -358,7 +359,9 @@ export function Dashboard({
           <ModeToggle />
           <UserProfile />
         </header>
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto [scrollbar-gutter:_stable]">
+          {children}
+        </main>
       </div>
     </div>
   );

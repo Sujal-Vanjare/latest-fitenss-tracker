@@ -2,7 +2,6 @@
 
 import { createSupabaseBrowser } from "@/lib/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-
 import { useEffect } from "react";
 import useUser from "./useUser";
 
@@ -28,7 +27,10 @@ export function useBodyWeightHistory() {
     return data || [];
   };
 
-  const queryKey: [string, string] = ["body_weight_history", user?.id || ""];
+  const queryKey: [string, string] = [
+    "body_weight_history",
+    user?.user_metadata?.name || "",
+  ];
 
   // Query to fetch data
   const query = useQuery({

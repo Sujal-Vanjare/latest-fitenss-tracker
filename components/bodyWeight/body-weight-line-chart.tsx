@@ -101,7 +101,17 @@ export default function BodyWeightLineChart() {
           </div>
         </CardHeader>
         <CardContent className="px-2 sm:p-6">
-          <Skeleton className="w-full h-[250px] bg-muted/60" />
+          <Skeleton className="w-full h-[250px] bg-muted/60 flex items-center justify-center">
+            <p className="text-sm text-muted-foreground opacity-70">
+              {isLoading
+                ? "Loading data..."
+                : error
+                ? "Something went wrong. Please try again later."
+                : !history || history.length === 0
+                ? "No data available."
+                : null}
+            </p>
+          </Skeleton>
         </CardContent>
       </Card>
     );
@@ -260,6 +270,7 @@ export default function BodyWeightLineChart() {
             />
 
             <ChartTooltip
+              cursor={false}
               content={
                 <ChartTooltipContent
                   className="w-[160px]"

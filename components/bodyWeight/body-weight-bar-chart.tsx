@@ -21,8 +21,8 @@ import { useBodyWeightHistory } from "@/hook/useBodyWeightHistory";
 import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  monthlyWeight: {
+    label: "monthlyWeight",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
@@ -34,11 +34,21 @@ export default function BodyWeightBarChart() {
     return (
       <Card className="2xl:h-[405px] 2xl:w-[400px]">
         <CardHeader className="p-6 pb-0">
-          <CardTitle>Bar Chart</CardTitle>
+          <CardTitle>Monthly Weight Progress</CardTitle>
           <Skeleton className="h-5 w-44 mt-2 dark:bg-primary/30" />
         </CardHeader>
         <CardContent className="pt-6">
-          <Skeleton className="w-full h-[226px] bg-muted/60" />
+          <Skeleton className="w-full h-[226px] bg-muted/60 flex items-center justify-center">
+            <p className="text-sm text-muted-foreground opacity-70">
+              {isLoading
+                ? "Loading data..."
+                : error
+                ? "Something went wrong. Please try again later."
+                : !history || history.length === 0
+                ? "No data available."
+                : null}
+            </p>
+          </Skeleton>
         </CardContent>
         <CardFooter className="flex-col items-start gap-2 text-sm">
           <Skeleton className="h-4 w-[200px] dark:bg-primary/30" />
@@ -113,7 +123,7 @@ export default function BodyWeightBarChart() {
   return (
     <Card className="2xl:h-[405px] 2xl:w-[400px]">
       <CardHeader className="pb-0">
-        <CardTitle>Bar Chart</CardTitle>
+        <CardTitle>Monthly Weight Progress</CardTitle>
         <CardDescription>{dateRangeDescription}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -140,7 +150,12 @@ export default function BodyWeightBarChart() {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="weight" fill="var(--color-desktop)" radius={8}>
+            <Bar
+              dataKey="weight"
+              fill="var(--color-monthlyWeight)"
+              radius={8}
+              maxBarSize={40}
+            >
               <LabelList
                 position="top"
                 offset={12}

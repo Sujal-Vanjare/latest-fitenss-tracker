@@ -31,6 +31,14 @@ const chartConfig = {
     label: "Weight",
     color: "hsl(var(--chart-1))",
   },
+  sets: {
+    label: "Sets",
+    color: "hsl(var(--chart-4))",
+  },
+  total_reps: {
+    label: "Total Reps",
+    color: "hsl(var(--chart-5))",
+  },
 } satisfies ChartConfig;
 
 export default function WorkoutLineChart({
@@ -288,6 +296,20 @@ export default function WorkoutLineChart({
               dataKey="weight"
               type="monotone"
               stroke={`var(--color-weight)`}
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              dataKey="sets"
+              type="monotone"
+              stroke={`var(--color-sets)`}
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              dataKey="total_reps"
+              type="monotone"
+              stroke={`var(--color-total_reps)`}
               strokeWidth={2}
               dot={false}
             />

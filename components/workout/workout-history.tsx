@@ -60,19 +60,31 @@ export default function WorkoutHistory({
               <TableRow>
                 <TableHead>Weight</TableHead>
                 <TableHead>Recorded at</TableHead>
+                <TableHead className="hidden md:table-cell whitespace-pre-wrap">
+                  Sets {"             "}
+                </TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Total Reps
+                </TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Array.from({ length: 6 }).map((_, index) => (
+              {Array.from({ length: 4 }).map((_, index) => (
                 <TableRow key={index} className="h-[53px]">
                   <TableCell className="font-medium">
                     <Skeleton className="h-4 w-8 bg-muted/60" />
                   </TableCell>
                   <TableCell className="table-cell">
                     <Skeleton className="h-4 w-24 bg-muted/60" />
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <Skeleton className="h-4 w-7 bg-muted/60" />
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <Skeleton className="h-4 w-7 bg-muted/60" />
                   </TableCell>
                   <TableCell>
                     <MoreHorizontal className="h-4 w-4" />
@@ -83,7 +95,7 @@ export default function WorkoutHistory({
           </Table>
         </CardContent>
         <CardFooter>
-          <Skeleton className="h-4 w-64 dark:bg-primary/30" />
+          <Skeleton className="h-4 w-20 dark:bg-primary/30" />
         </CardFooter>
       </Card>
     );
@@ -104,9 +116,9 @@ export default function WorkoutHistory({
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Body weight deleted successfully!");
+      toast.success("Workout Entry deleted successfully!");
       queryClient.invalidateQueries({
-        queryKey: ["workout_history"],
+        queryKey: [{ exerciseName }],
       });
     }
   };
@@ -126,6 +138,12 @@ export default function WorkoutHistory({
               <TableRow>
                 <TableHead>Weight</TableHead>
                 <TableHead>Recorded at</TableHead>
+                <TableHead className="hidden md:table-cell whitespace-pre-wrap">
+                  Sets {"             "}
+                </TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Total Reps
+                </TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
@@ -137,8 +155,14 @@ export default function WorkoutHistory({
                   <TableCell className="font-medium">
                     {entry.weight} Kg
                   </TableCell>
-                  <TableCell className="table-cell">
+                  <TableCell>
                     {format(new Date(entry.recorded_at), "PPP")}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {entry.sets}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {entry.total_reps}
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
@@ -176,14 +200,14 @@ export default function WorkoutHistory({
         </CardContent>
         <CardFooter>
           <div className="text-xs text-muted-foreground">
-            Showing <strong>1-{history?.length}</strong> of{" "}
-            <strong>{history?.length}</strong> entries
+            Showing <strong>{history?.length}</strong> entries
           </div>
         </CardFooter>
       </Card>
       {isEditModalOpen && selectedEntry && (
         <EditWorkoutDataModal
           entry={selectedEntry}
+          exerciseName={exerciseName}
           onClose={() => setEditModalOpen(false)}
         />
       )}

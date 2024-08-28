@@ -20,7 +20,7 @@ type Exercise = {
 type WorkoutEntry = {
   id: number;
   weight: number;
-  sets: number;
   recorded_at: Date;
-  reps_per_set: number[];
+  sets: number;
+  total_reps: number;
 };

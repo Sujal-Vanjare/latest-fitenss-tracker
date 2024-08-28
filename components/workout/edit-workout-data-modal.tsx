@@ -35,19 +35,24 @@ import { cn } from "@/lib/utils";
 
 // Define the schema for form validation using zod
 const EditFormSchema = z.object({
+  recorded_at: z.date({ required_error: "Recorded at date is required" }),
   weight: z
     .number()
-    .positive("Weight must be a positive number")
-    .min(1, "Weight must be at least 1 kg"),
+    .positive("Workout weight must be a positive number")
+    .min(0.5, "Workout weight must be at least 1 kg")
+    .max(1000, "Workout weight cannot exceed 999.9 kg"), // No need for further refinement here
   sets: z
+    .number()
+    .positive("Workout sets must be a positive number")
+    .int("Workout sets must be a whole number")
+    .min(1, "Workout sets must be at least 1 set")
+    .max(10, "Workout sets cannot exceed 10"),
+  total_reps: z
     .number()
     .int("Sets must be an integer")
     .positive("Sets must be a positive number")
-    .min(1, "Sets must be at least 1"),
-  reps_per_set: z
-    .array(z.number().positive("Reps per set must be positive"))
-    .nonempty("Reps per set cannot be empty"),
-  recorded_at: z.date({ required_error: "Recorded at date is required" }),
+    .min(1, "Sets must be at least 1")
+    .max(100, "Workout sets cannot exceed 10"),
 });
 
 type EditFormValues = z.infer<typeof EditFormSchema>;
@@ -55,7 +60,9 @@ type EditFormValues = z.infer<typeof EditFormSchema>;
 export function EditWorkoutDataModal({
   entry,
   onClose,
+  exerciseName,
 }: {
+  exerciseName: string;
   entry: WorkoutEntry;
   onClose: () => void;
 }) {
@@ -66,7 +73,7 @@ export function EditWorkoutDataModal({
     defaultValues: {
       weight: entry.weight,
       sets: entry.sets,
-      reps_per_set: entry.reps_per_set,
+      total_reps: entry.total_reps,
       recorded_at: new Date(entry.recorded_at),
     },
   });
@@ -85,7 +92,7 @@ export function EditWorkoutDataModal({
       .update({
         weight: data.weight,
         sets: data.sets,
-        reps_per_set: data.reps_per_set,
+        total_reps: data.total_reps,
         recorded_at: adjustedDate.toISOString(),
       })
       .eq("id", entry.id);
@@ -95,7 +102,7 @@ export function EditWorkoutDataModal({
     } else {
       toast.success("Workout entry updated successfully!");
       queryClient.invalidateQueries({
-        queryKey: ["workout_history"], // Adjust the query key as needed
+        queryKey: [{ exerciseName }],
       });
       onClose();
     }
@@ -205,25 +212,22 @@ export function EditWorkoutDataModal({
 
             <FormField
               control={form.control}
-              name="reps_per_set"
+              name="total_reps"
               render={({ field }) => (
                 <FormItem className="mb-4">
-                  <FormLabel>Reps per Set</FormLabel>
+                  <FormLabel>Total Reps</FormLabel>
                   <FormControl>
                     <Input
                       className="py-2 pl-3 pr-4 text-left font-normal"
-                      placeholder="0, 0, 0, 0"
-                      type="text"
+                      placeholder="Weight should be in Kg"
+                      type="number"
                       {...field}
-                      value={field.value ? field.value.join(", ") : ""} // Provide a fallback to an empty string
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value
-                            .split(",")
-                            .map((rep) => Number(rep.trim()))
-                        )
-                      } // Convert to array of numbers
+                      value={field.value || ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number on change
                       required
+                      min={1}
+                      max={100}
+                      step={1}
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />

@@ -16,7 +16,7 @@ export function useWorkoutHistory(exerciseName: string) {
     const supabase = createSupabaseBrowser();
     const { data, error } = await supabase
       .from("workout_entries")
-      .select("id, recorded_at, weight, sets, reps_per_set")
+      .select("id, recorded_at, weight, sets, total_reps")
       .eq("user_id", user.id)
       .eq("exercise_name", exerciseName)
       .order("recorded_at", { ascending: false });
@@ -28,11 +28,7 @@ export function useWorkoutHistory(exerciseName: string) {
     return data || [];
   };
 
-  const queryKey: [string, string, string] = [
-    "workout_history",
-    user?.user_metadata?.name || "",
-    exerciseName,
-  ];
+  const queryKey: [string] = [exerciseName];
 
   // Query to fetch data
   const query = useQuery({

@@ -43,15 +43,12 @@ const FormSchema = z.object({
     .int("Workout sets must be a whole number")
     .min(1, "Workout sets must be at least 1 set")
     .max(10, "Workout sets cannot exceed 10"),
-  reps_per_set: z
-    .array(
-      z
-        .number()
-        .positive("Reps per set must be a positive number")
-        .int("Reps per set must be a whole number")
-    )
-    .min(1, "Reps per set cannot be empty")
-    .max(10, "Reps per set cannot have more than 10 values"),
+  total_reps: z
+    .number()
+    .int("Sets must be an integer")
+    .positive("Sets must be a positive number")
+    .min(1, "Sets must be at least 1")
+    .max(100, "Workout sets cannot exceed 10"),
 });
 
 export default function AddWorkoutWeight({
@@ -89,7 +86,7 @@ export default function AddWorkoutWeight({
               exercise_name: exerciseName, // Pass the exercise name
               weight: formData.weight, // Use the weight from formData
               sets: formData.sets, // Use sets from formData
-              reps_per_set: formData.reps_per_set, // Pass reps_per_set as an array
+              total_reps: formData.total_reps,
               recorded_at: recordedAt.toISOString(),
             },
           ]);
@@ -186,7 +183,7 @@ export default function AddWorkoutWeight({
                 <FormControl>
                   <Input
                     className="py-2 pl-3 pr-4 text-left font-normal"
-                    placeholder="Weight should be in Kg"
+                    placeholder="0"
                     type="number"
                     {...field}
                     value={field.value || ""}
@@ -204,25 +201,22 @@ export default function AddWorkoutWeight({
 
           <FormField
             control={form.control}
-            name="reps_per_set"
+            name="total_reps"
             render={({ field }) => (
               <FormItem className="w-full flex flex-col lg:col-start-2 lg:col-end-3">
-                <FormLabel>Reps per Set</FormLabel>
+                <FormLabel>Total Reps</FormLabel>
                 <FormControl>
                   <Input
                     className="py-2 pl-3 pr-4 text-left font-normal"
-                    placeholder="0, 0, 0, 0"
-                    type="text"
+                    placeholder="0"
+                    type="number"
                     {...field}
-                    value={field.value ? field.value.join(", ") : ""} // Provide a fallback to an empty string
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value
-                          .split(",")
-                          .map((rep) => Number(rep.trim()))
-                      )
-                    } // Convert to array of numbers
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number on change
                     required
+                    min={1}
+                    max={100}
+                    step={1}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />

@@ -27,10 +27,7 @@ export function useBodyWeightHistory() {
     return data || [];
   };
 
-  const queryKey: [string, string] = [
-    "body_weight_history",
-    user?.user_metadata?.name || "",
-  ];
+  const queryKey: [string] = ["body_weight_history"];
 
   // Query to fetch data
   const query = useQuery({

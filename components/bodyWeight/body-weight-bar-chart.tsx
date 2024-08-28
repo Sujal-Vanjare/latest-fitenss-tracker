@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 
 import {
@@ -167,16 +167,23 @@ export default function BodyWeightBarChart() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          {weightChangeLastSixMonths > 0
-            ? `Gained ${weightChangeLastSixMonths.toFixed(
-                1
-              )} kg in the last ${monthsText}`
-            : `Lost ${Math.abs(weightChangeLastSixMonths).toFixed(
-                1
-              )} kg in the last ${monthsText}`}
-          <TrendingUp className="h-4 w-4" />
+        <div className="flex gap-1 font-medium leading-none">
+          {weightChangeLastSixMonths > 0 ? (
+            <>
+              <span className="text-green-600 dark:text-green-400">Gained</span>{" "}
+              {weightChangeLastSixMonths.toLocaleString()} kg in the last{" "}
+              {monthsText}
+              <TrendingUp className="h-4 w-4" />
+            </>
+          ) : (
+            <>
+              <span className="text-red-600 dark:text-red-400">Lost </span>{" "}
+              {Math.abs(weightChangeLastSixMonths).toLocaleString()} kg in the
+              last {monthsText} <TrendingDown className="h-4 w-4" />
+            </>
+          )}
         </div>
+
         <div className="leading-none text-muted-foreground">
           Showing Body Weight for the last {monthsText}
         </div>

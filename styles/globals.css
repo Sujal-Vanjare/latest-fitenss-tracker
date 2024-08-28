@@ -74,11 +74,9 @@
 }
 
 .vertical-scrollbar::-webkit-scrollbar-thumb {
-  background-color: hsl(
-    var(--muted-foreground)
-  ); /* Use the variable for thumb color */
+  background-color: hsl(var(--border)); /* Use the variable for thumb color */
 }
 
 .vertical-scrollbar::-webkit-scrollbar-track {
-  background: hsl(var(--muted)); /* Use the variable for track color */
+  background: hsl(var(--popover)); /* Use the variable for track color */
 }

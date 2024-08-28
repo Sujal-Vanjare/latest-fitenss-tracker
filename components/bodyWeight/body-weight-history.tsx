@@ -64,7 +64,7 @@ export default function BodyWeightHistory() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Array.from({ length: 6 }).map((_, index) => (
+              {Array.from({ length: 4 }).map((_, index) => (
                 <TableRow key={index} className="h-[53px]">
                   <TableCell className="font-medium">
                     <Skeleton className="h-4 w-8 bg-muted/60" />
@@ -81,7 +81,7 @@ export default function BodyWeightHistory() {
           </Table>
         </CardContent>
         <CardFooter>
-          <Skeleton className="h-4 w-64 dark:bg-primary/30" />
+          <Skeleton className="h-4 w-20 dark:bg-primary/30" />
         </CardFooter>
       </Card>
     );
@@ -174,8 +174,7 @@ export default function BodyWeightHistory() {
         </CardContent>
         <CardFooter>
           <div className="text-xs text-muted-foreground">
-            Showing <strong>1-{history?.length}</strong> of{" "}
-            <strong>{history?.length}</strong> entries
+            Showing <strong>{history?.length}</strong> entries
           </div>
         </CardFooter>
       </Card>

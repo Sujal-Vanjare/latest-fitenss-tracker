@@ -41,11 +41,11 @@ export default function SignIn() {
       <div className="p-5 space-y-5">
         <div className="text-center space-y-3">
           <Image
-            src={"/supabase.png"}
-            alt="supabase logo"
-            width={50}
-            height={50}
-            className=" rounded-full mx-auto"
+            src="/favicon-192x192.png"
+            alt="website icon"
+            width={192}
+            height={192}
+            className="h-12 w-12 rounded-full mx-auto"
           />
           <h1 className="font-bold">Sign in to SupaAuth</h1>
           <p className="text-sm">Welcome back! Please sign in to continue</p>

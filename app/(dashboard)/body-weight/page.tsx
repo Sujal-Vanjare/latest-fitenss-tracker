@@ -3,6 +3,10 @@ import BodyWeightBarChart from "@/components/bodyWeight/body-weight-bar-chart";
 import BodyWeightHistory from "@/components/bodyWeight/body-weight-history";
 import BodyWeightLineChart from "@/components/bodyWeight/body-weight-line-chart";
 
+export const metadata = {
+  title: "Body Weight",
+};
+
 export default function Page() {
   return (
     <>

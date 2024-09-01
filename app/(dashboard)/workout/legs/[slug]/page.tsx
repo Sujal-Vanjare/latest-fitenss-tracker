@@ -2,12 +2,34 @@ import AddWorkoutWeight from "@/components/workout/add-workout-weight";
 import WorkoutBarChart from "@/components/workout/workout-bar-chart";
 import WorkoutHistory from "@/components/workout/workout-history";
 import WorkoutLineChart from "@/components/workout/workout-line-chart";
+import { getExercises } from "@/data/fetchExercises";
+import { formatExerciseName } from "@/lib/utils";
+import slugify from "slugify";
+
+// Dynamic segments not included in generateStaticParams will return a 404.
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const exercises = await getExercises("Legs");
+
+  return exercises.map((exercise) => ({
+    slug: slugify(exercise.name, { lower: true }),
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const exerciseName = formatExerciseName(params.slug);
+  return {
+    title: exerciseName,
+  };
+}
 
 export default function Page({ params }: { params: { slug: string } }) {
-  const exerciseName = params.slug
-    .split("-") // Split the slug into words
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
-    .join(" "); // Join the words with spaces
+  const exerciseName = formatExerciseName(params.slug);
 
   return (
     <>

@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /workout/
+Disallow: /body-weight
+
+# Host
+Host: https://trackworkout.vercel.app
+
+# Sitemaps
+Sitemap: https://trackworkout.vercel.app/sitemap.xml

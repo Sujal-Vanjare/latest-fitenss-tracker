@@ -31,6 +31,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import UserProfile from "./auth/user-profile";
 import slugify from "slugify";
+import Image from "next/image";
 
 export function Dashboard({
   children,
@@ -73,7 +74,13 @@ export function Dashboard({
         <div className="flex h-dvh flex-col gap-2">
           <div className="flex shrink-0 h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Package2 className="h-6 w-6" />
+              <Image
+                src="/favicon-192x192.png"
+                alt="website icon"
+                width={192}
+                height={192}
+                className="h-6 w-6"
+              />
               <span>Fitness Tracker</span>
             </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
@@ -215,7 +222,13 @@ export function Dashboard({
                   href="/"
                   className="flex items-center gap-2 font-semibold"
                 >
-                  <Package2 className="h-6 w-6" />
+                  <Image
+                    src="/favicon-192x192.png"
+                    alt="website icon"
+                    width={192}
+                    height={192}
+                    className="h-6 w-6"
+                  />
                   <span>Fitness Tracker</span>
                 </Link>
                 <Button

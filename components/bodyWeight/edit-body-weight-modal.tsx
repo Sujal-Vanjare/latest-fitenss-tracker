@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -51,8 +50,6 @@ export function EditBodyWeightModal({
   entry: BodyWeightEntry;
   onClose: () => void;
 }) {
-  const queryClient = useQueryClient();
-
   const form = useForm<EditFormValues>({
     resolver: zodResolver(EditFormSchema),
     defaultValues: {
@@ -82,9 +79,6 @@ export function EditBodyWeightModal({
       toast.error(error.message);
     } else {
       toast.success("Body weight updated successfully!");
-      queryClient.invalidateQueries({
-        queryKey: ["body_weight_history"],
-      });
       onClose();
     }
   };

@@ -30,7 +30,6 @@ import { format } from "date-fns";
 import { useWorkoutHistory } from "@/hook/useWorkoutHistory";
 import { toast } from "sonner";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "../ui/skeleton";
 import { EditWorkoutDataModal } from "./edit-workout-data-modal";
 
@@ -42,8 +41,6 @@ export default function WorkoutHistory({
   const { data: history, isLoading, error } = useWorkoutHistory(exerciseName);
   const [selectedEntry, setSelectedEntry] = useState<WorkoutEntry | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-
-  const queryClient = useQueryClient();
 
   if (isLoading || error || !history || history.length === 0) {
     return (
@@ -117,9 +114,6 @@ export default function WorkoutHistory({
       toast.error(error.message);
     } else {
       toast.success("Workout Entry deleted successfully!");
-      queryClient.invalidateQueries({
-        queryKey: [{ exerciseName }],
-      });
     }
   };
 
@@ -207,7 +201,6 @@ export default function WorkoutHistory({
       {isEditModalOpen && selectedEntry && (
         <EditWorkoutDataModal
           entry={selectedEntry}
-          exerciseName={exerciseName}
           onClose={() => setEditModalOpen(false)}
         />
       )}

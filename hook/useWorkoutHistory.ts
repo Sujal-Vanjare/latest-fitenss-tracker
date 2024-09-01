@@ -47,12 +47,11 @@ export function useWorkoutHistory(exerciseName: string) {
       .on(
         "postgres_changes",
         {
-          event: "*", // Listen to all events: INSERT, UPDATE, DELETE
+          event: "*",
           schema: "public",
           table: "workout_entries",
         },
         (payload) => {
-          // Invalidate the query to refetch data
           queryClient.invalidateQueries({
             queryKey,
           });

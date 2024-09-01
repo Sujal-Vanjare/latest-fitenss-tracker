@@ -1,7 +1,7 @@
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { createSupabaseBrowser } from "@/lib/supabase/client";
 
 export async function getExercises(categoryName: string) {
-  const supabase = createSupabaseServer();
+  const supabase = createSupabaseBrowser();
 
   const { data, error } = await supabase
     .from("exercises")

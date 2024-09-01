@@ -31,7 +31,6 @@ import { useBodyWeightHistory } from "@/hook/useBodyWeightHistory";
 import { EditBodyWeightModal } from "./edit-body-weight-modal";
 import { toast } from "sonner";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "../ui/skeleton";
 
 export default function BodyWeightHistory() {
@@ -40,8 +39,6 @@ export default function BodyWeightHistory() {
     null
   );
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-
-  const queryClient = useQueryClient();
 
   if (isLoading || error || !history || history.length === 0) {
     return (
@@ -103,9 +100,6 @@ export default function BodyWeightHistory() {
       toast.error(error.message);
     } else {
       toast.success("Body weight deleted successfully!");
-      queryClient.invalidateQueries({
-        queryKey: ["body_weight_history"],
-      });
     }
   };
 

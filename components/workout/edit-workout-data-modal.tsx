@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -60,14 +59,10 @@ type EditFormValues = z.infer<typeof EditFormSchema>;
 export function EditWorkoutDataModal({
   entry,
   onClose,
-  exerciseName,
 }: {
-  exerciseName: string;
   entry: WorkoutEntry;
   onClose: () => void;
 }) {
-  const queryClient = useQueryClient();
-
   const form = useForm<EditFormValues>({
     resolver: zodResolver(EditFormSchema),
     defaultValues: {
@@ -81,7 +76,6 @@ export function EditWorkoutDataModal({
   const onSubmit = async (data: EditFormValues) => {
     const supabase = createSupabaseBrowser();
 
-    // Adjust the date to remove timezone effects
     const adjustedDate = new Date(data.recorded_at);
     adjustedDate.setMinutes(
       adjustedDate.getMinutes() - adjustedDate.getTimezoneOffset()
@@ -101,12 +95,10 @@ export function EditWorkoutDataModal({
       toast.error(error.message);
     } else {
       toast.success("Workout entry updated successfully!");
-      queryClient.invalidateQueries({
-        queryKey: [{ exerciseName }],
-      });
       onClose();
     }
   };
+
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent>

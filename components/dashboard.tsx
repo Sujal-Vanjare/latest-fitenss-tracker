@@ -79,7 +79,7 @@ export function Dashboard({
                 alt="website icon"
                 width={192}
                 height={192}
-                className="h-6 w-6"
+                className="h-7 w-7"
               />
               <span>Fitness Tracker</span>
             </Link>
@@ -227,7 +227,7 @@ export function Dashboard({
                     alt="website icon"
                     width={192}
                     height={192}
-                    className="h-6 w-6"
+                    className="h-7 w-7"
                   />
                   <span>Fitness Tracker</span>
                 </Link>

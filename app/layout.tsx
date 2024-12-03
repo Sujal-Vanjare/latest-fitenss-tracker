@@ -1,33 +1,27 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
-import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import QueryClientProvider from "@/components/query-provider";
-import siteMetadata from "@/lib/siteMetaData";
+import ThemeProvider from "@/theme/theme-provider";
+import { siteConfig } from "@/config/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  metadataBase: new URL(siteMetadata.siteUrl),
+export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    template: `%s | ${siteMetadata.title}`,
-    default: siteMetadata.title, // a default is required when creating a template
+    template: `%s | ${siteConfig.shortName}`,
+    default: siteConfig.name,
   },
-  description: siteMetadata.description,
+  description: siteConfig.description,
 
   openGraph: {
-    title: siteMetadata.title,
-    description: siteMetadata.description,
-    url: siteMetadata.siteUrl,
-    siteName: siteMetadata.title,
-    images: [
-      {
-        url: siteMetadata.socialBanner, // Must be an absolute URL
-        width: 1200,
-        height: 675,
-      },
-    ],
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.shortName,
+    images: [siteConfig.ogImage],
     locale: "en_US",
     type: "website",
   },
@@ -46,9 +40,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: siteMetadata.title,
-    description: siteMetadata.description,
-    images: [siteMetadata.socialBanner],
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
 };
 
